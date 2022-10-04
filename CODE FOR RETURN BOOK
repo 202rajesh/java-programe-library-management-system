@@ -1,0 +1,115 @@
+package adminlogin;
+import javax.swing.*;
+import dbcon.DBCon;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+public class Returnbooks extends JFrame implements ActionListener {
+ JFrame frame;
+ JLabel codeLabel = new JLabel("Book_Code");
+ JLabel idLabel = new JLabel("Student_Id");
+ JTextField codeTextField = new JTextField();
+ JTextField idTextField = new JTextField();
+ JButton addButton = new JButton("Return Book");
+ JButton bkButton = new JButton("Back");
+Returnbooks(){
+createWindow();
+
+setLocationAndSize();
+addComponentsToFrame();
+actionEvent();
+}
+public void createWindow()
+{
+frame = new JFrame();
+frame.setTitle("RETURN BOOKS");
+frame.setBounds(40, 40, 380, 450);
+frame.getContentPane().setBackground(Color.LIGHT_GRAY);
+frame.getContentPane().setLayout(null);
+frame.setVisible(true);
+frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+frame.setResizable(false);
+}
+public void setLocationAndSize() {
+codeLabel.setForeground (Color.red);
+codeLabel.setBounds (15, 15, 100, 20);
+idLabel.setForeground (Color.red);
+idLabel.setBounds (15, 45, 100, 20);
+codeTextField.setHorizontalAlignment (JTextField.RIGHT);
+codeTextField.setBounds (120, 15, 175, 25);
+idTextField.setHorizontalAlignment (JTextField.RIGHT);
+idTextField.setEnabled (true);
+idTextField.setBounds (120, 45, 175, 25);
+addButton.setBounds (25, 175, 125, 25);
+addButton.addActionListener (this);
+bkButton.setBounds (165, 175, 125, 25);
+bkButton.addActionListener (this);
+ } 
+public void addComponentsToFrame()
+{
+ frame.add(codeLabel);
+ 
+ frame.add(idLabel);
+ 
+ frame.add(codeTextField);
+ 
+ frame.add(idTextField);
+ 
+ frame.add(addButton);
+ 
+ frame.add(bkButton);
+ 
+}
+
+public void actionEvent()
+{
+ addButton.addActionListener(this);
+ bkButton.addActionListener(this);
+}
+public static void main(String[] args) {
+new Returnbooks();
+}
+@Override
+public void actionPerformed(ActionEvent ae) {
+Connection conn=null;
+ if(ae.getSource()==addButton)
+ 
+ {
+ try {
+ 
+ conn =DBCon.getCon();
+ 
+ PreparedStatement ps=conn.prepareStatement("");
+ 
+ ps.setString(1,codeTextField.getText());
+ 
+ ps.setString(2,idTextField.getText());
+ 
+ Object obj = ae.getSource();
+ if(obj == addButton ) {
+ 
+ ps.executeUpdate();
+ 
+ JOptionPane.showMessageDialog(null,"Book Returned Successfully");
+ 
+ }
+ else
+ {
+ JOptionPane.showMessageDialog(null,"Sorry Unable To Return Book");
+ }
+
+ conn.close();
+ } catch (SQLException e1) {
+ e1.printStackTrace();
+ }
+ }
+ 
+ if(ae.getSource()==bkButton)
+ {
+ setVisible (false);
+dispose();
+ }
+}
+}
