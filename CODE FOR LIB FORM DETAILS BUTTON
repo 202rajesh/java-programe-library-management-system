@@ -1,0 +1,195 @@
+package adminlogin;
+import javax.swing.*;
+import dbcon.DBCon;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+public class LibForm implements ActionListener {
+JFrame frame;
+String[] gender = {"","Male","Female"};
+JLabel idLabel = new JLabel("ID NO.");
+JLabel nameLabel = new JLabel("NAME");
+JLabel genderLabel = new JLabel("GENDER");
+JLabel fatherNameLabel = new JLabel("FATHER NAME");
+JLabel passwordLabel = new JLabel("PASSWORD");
+JLabel confirmPasswordLabel = new JLabel("CONFIRM PASSWORD");
+JLabel cityLabel = new JLabel("CITY");
+JLabel emailLabel = new JLabel("EMAIL");
+JLabel phoneLabel = new JLabel("PHONE NO");
+JTextField idTextField = new JTextField();
+JTextField nameTextField = new JTextField();
+JComboBox genderComboBox = new JComboBox(gender);
+JTextField fatherTextField = new JTextField();
+JPasswordField passwordField = new JPasswordField();
+JPasswordField confirmPasswordField = new JPasswordField();
+JTextField cityTextField = new JTextField();
+JTextField emailTextField = new JTextField();
+JTextField phoneTextField = new JTextField();
+JButton addButton = new JButton("ADD");
+JButton resetButton = new JButton("RESET");
+LibForm(){
+createWindow();
+setLocationAndSize();
+addComponentsToFrame();
+actionEvent();
+}
+public void createWindow()
+{
+frame = new JFrame();
+frame.setTitle("Librarian From");
+frame.setBounds(90, 40, 500, 700);
+frame.getContentPane().setBackground(Color.LIGHT_GRAY);
+frame.getContentPane().setLayout(null);
+frame.setVisible(true);
+frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+frame.setResizable(true);
+}
+public void setLocationAndSize() {
+idLabel.setBounds(20, 20, 40, 70);
+nameLabel.setBounds(20, 70, 40, 70);
+genderLabel.setBounds(20, 120, 80, 70);
+fatherNameLabel.setBounds(20, 170, 100, 70);
+passwordLabel.setBounds(20, 220, 100, 70);
+confirmPasswordLabel.setBounds(20, 270, 140, 70);
+cityLabel.setBounds(20, 320, 100, 70);
+emailLabel.setBounds(20, 370, 100, 70);
+phoneLabel.setBounds(20, 420, 100, 70);
+idTextField.setBounds(180, 43, 165, 23);
+nameTextField.setBounds(180, 93, 165, 23);
+genderComboBox.setBounds(180, 143, 165, 23);
+fatherTextField.setBounds(180,193,165,23);
+ 
+passwordField.setBounds(180,243,165,23);
+ 
+confirmPasswordField.setBounds(180,293,165,23);
+ 
+cityTextField.setBounds(180,343,165,23);
+emailTextField.setBounds(180,393,165,23);
+ phoneTextField.setBounds(180,443,165,23);
+ 
+ addButton.setBounds(70,550,100,35);
+ 
+ resetButton.setBounds(220,550,100,35);
+ 
+}
+public void addComponentsToFrame()
+{
+ frame.add(idLabel);
+ frame.add(nameLabel);
+ 
+ frame.add(genderLabel);
+ 
+ frame.add(fatherNameLabel);
+ 
+ frame.add(passwordLabel);
+ 
+ frame.add(confirmPasswordLabel);
+ 
+ frame.add(cityLabel);
+ 
+ frame.add(emailLabel);
+ 
+ frame.add(phoneLabel);
+ 
+ frame.add(idTextField);
+ 
+ frame.add(nameTextField);
+ 
+ frame.add(genderComboBox);
+ 
+ frame.add(fatherTextField);
+ frame.add(passwordField);
+ 
+ frame.add(confirmPasswordField);
+ 
+ frame.add(cityTextField);
+ 
+ frame.add(emailTextField);
+ 
+ frame.add(phoneTextField);
+ 
+ frame.add(addButton);
+ frame.add(resetButton);
+ 
+}
+public void actionEvent()
+{
+ addButton.addActionListener(this);
+ resetButton.addActionListener(this);
+}
+public void actionPerformed(ActionEvent ae) {
+Connection conn=null;
+ if(ae.getSource()==addButton)
+ 
+ {
+ 
+ try {
+ 
+ conn =DBCon.getCon();
+ PreparedStatement ps=conn.prepareStatement("insert into librarian values(?,?,?,?,?,?,?,?,?)");
+ 
+ //Specifying the values of it's parameter
+ 
+ ps.setString(1,idTextField.getText());
+ ps.setString(2,nameTextField.getText());
+ ps.setString(3,genderComboBox.getSelectedItem().toString());
+ ps.setString(4,fatherTextField.getText());
+ ps.setString(5,passwordField.getText());
+ ps.setString(6,confirmPasswordField.getText());
+ ps.setString(7,cityTextField.getText());
+ ps.setString(8,emailTextField.getText());
+ String ph=phoneTextField.getText();
+ int phno= Integer.parseInt(ph);
+ ps.setInt(9,phno);
+ 
+ //Checking for the Password match
+ 
+ if(passwordField.getText().equals(confirmPasswordField.getText()))
+ {
+ //Executing query
+ 
+ ps.executeUpdate();
+ 
+ JOptionPane.showMessageDialog(null,"Librarian Added Successfully");
+ }
+ else
+ {
+ JOptionPane.showMessageDialog(null,"password did not match");
+ }
+ 
+ conn.close();
+ 
+ 
+ } catch (SQLException e1) {
+ 
+ e1.printStackTrace();
+ }
+ }
+ if(ae.getSource()==resetButton)
+ {
+ //Clearing Fields
+ 
+ idTextField.setText("");
+ 
+ nameTextField.setText("");
+ 
+ genderComboBox.setSelectedItem("Male");
+ 
+ fatherTextField.setText("");
+ 
+ passwordField.setText("");
+ 
+ confirmPasswordField.setText("");
+ 
+ cityTextField.setText("");
+ 
+ emailTextField.setText("");
+ 
+ phoneTextField.setText("");
+ }
+}
+public static void main(String[] args) {
+new LibForm();
+}
+}
+
