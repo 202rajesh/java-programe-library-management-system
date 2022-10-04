@@ -1,0 +1,101 @@
+package adminlogin;
+import java.awt.event.*;
+import java.sql.*;
+import dbcon.DBCon;
+import java.awt.*;
+import javax.swing.*;
+public class LibrarianLogin extends JFrame implements ActionListener{
+JFrame frame;
+JLabel idLabel = new JLabel("Enter ID:");
+JLabel passwordLabel = new JLabel("Enter Password:");
+JLabel message = new JLabel();
+JTextField idTextField = new JTextField();
+JPasswordField passwordField = new JPasswordField();
+JButton addButton = new JButton("LOGIN");
+LibrarianLogin(){
+createWindow();
+setLocationAndSize();
+setColorAndFont();
+addComponentsToFrame();
+actionEvent();
+}
+private void setColorAndFont() {
+idLabel.setForeground(java.awt.Color.BLUE);
+passwordLabel.setForeground(java.awt.Color.BLUE);
+}
+public void createWindow()
+{
+frame = new JFrame();
+frame.setTitle("LIBRARIAN LOGIN FORM");
+frame.setBounds(60, 40, 500, 500);
+frame.getContentPane().setBackground(java.awt.Color.RED);
+frame.getContentPane().setLayout(null);
+frame.setVisible(true);
+frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+frame.setResizable(false);
+}
+public void setLocationAndSize() {
+idLabel.setBounds(20, 70, 60, 70);
+passwordLabel.setBounds(20, 220, 100, 70);
+idTextField.setBounds(180, 93, 165, 23);
+passwordField.setBounds(180, 243, 165, 23);
+addButton.setBounds(180, 343, 165, 23);
+}
+public void addComponentsToFrame() {
+frame.add(idLabel);
+frame.add(passwordLabel);
+frame.add(idTextField);
+frame.add(passwordField);
+frame.add(addButton);
+frame.add(message);
+}
+public void actionEvent()
+{
+addButton.addActionListener(this);
+}
+public static void main(String[] args) {
+new LibrarianLogin();
+}
+public void actionPerformed(ActionEvent ae) {
+
+Connection conn=null;
+try {
+ if(ae.getActionCommand().equals("LOGIN")) {
+String userName = idTextField.getText();
+char password[] = passwordField.getPassword();
+String pass1 = new String(password);
+String pass = pass1.toString();
+conn = DBCon.getCon();
+Statement stmt = conn.createStatement();
+System.out.println("Create Statement");
+System.out.println("user"+userName+"pass"+pass);
+ResultSet rs = stmt.executeQuery("select * from librarian where 
+id='"+userName+"'and password='"+pass+"' ");
+ System.out.println(rs);
+ if(rs.next()) {
+ System.out.println("if");
+ librariansection sec = new librariansection();
+ }
+ else {
+ JOptionPane.showMessageDialog(null,"Invalid user id & 
+password");
+}
+}
+} catch (Exception e) {
+e.printStackTrace();
+}
+}
+/*if(ae.getActionCommand().equals("LOGIN"))
+{
+librariansection sec = new librariansection();
+}
+String userName = idTextField.getText();
+String password = passwordField.getText();
+if(userName.equals("lib") && password.equals("lib123")) {
+message.setText("<html><font color='green'> SUCCESSFULLY LOGIN 
+</font></html>");
+}
+else {
+message.setText("<html><font color='blue'>INVALID USER...</font></html>");
+}*/
+}
