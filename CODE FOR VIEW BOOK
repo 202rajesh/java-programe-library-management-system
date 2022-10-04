@@ -1,0 +1,107 @@
+package adminlogin;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import dbcon.DBCon;
+public class Viewbooks extends JFrame implements ActionListener {
+JFrame frame, frame1;
+JTextField textbox;
+JLabel label;
+JButton button;
+JPanel panel;
+static JTable table;
+String[] columnNames ={"Code","Name","Author","Publisher","Stock","Rack"};
+public void createUI()
+{
+frame = new JFrame("View Books");
+frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+frame.setLayout(null);
+button = new JButton("search");
+button.setBounds(120,130,150,20);
+button.addActionListener(this);
+frame.add(button);
+frame.setVisible(true);
+frame.setSize(500, 400); 
+}
+public void actionPerformed(ActionEvent ae)
+{
+
+button = (JButton)ae.getSource();
+System.out.println("Showing Table Data.......");
+showTableData(); 
+} 
+public void showTableData()
+{
+frame1 = new JFrame("VIEW BOOKS");
+frame1.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+frame1.setLayout(new BorderLayout()); 
+DefaultTableModel model = new DefaultTableModel();
+model.setColumnIdentifiers(columnNames);
+table = new JTable();
+table.setModel(model); 
+table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+table.setFillsViewportHeight(true);
+JScrollPane scroll = new JScrollPane(table);
+scroll.setHorizontalScrollBarPolicy(
+JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+scroll.setVerticalScrollBarPolicy(
+JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED); 
+String code= "";
+String name= "";
+String author= "";
+String publisher = "";
+String stock = "";
+String rack = "";
+try
+{ 
+Connection con = DBCon.getCon();
+String sql = "select * from add_books";
+PreparedStatement ps = con.prepareStatement(sql);
+ResultSet rs = ps.executeQuery();
+int i =0;
+while(rs.next())
+{
+code = rs.getString(1);
+name = rs.getString(2);
+author = rs.getString(3);
+publisher = rs.getString(4);
+stock = rs.getString(5);
+rack = rs.getString(6);
+model.addRow(new Object[]{code , name, author, publisher,stock,rack});
+i++; 
+
+}
+if(i <1)
+{
+JOptionPane.showMessageDialog(null, "No Record Found","Error",
+JOptionPane.ERROR_MESSAGE);
+}
+if(i ==1)
+{
+System.out.println(i+" Record Found");
+}
+else
+{
+System.out.println(i+" Records Found");
+}
+}
+catch(Exception ex)
+{
+JOptionPane.showMessageDialog(null, ex.getMessage(),"Error",
+JOptionPane.ERROR_MESSAGE);
+}
+frame1.add(scroll);
+frame1.setVisible(true);
+frame1.setSize(400,300);
+}
+public static void main(String args[])
+{
+Viewbooks sr = new Viewbooks();
+sr.createUI(); 
+}
+}
