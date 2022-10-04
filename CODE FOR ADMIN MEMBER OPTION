@@ -1,0 +1,58 @@
+package adminlogin;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
+public class adminsection extends JFrame implements ActionListener {
+adminsection(){
+JFrame frame = new JFrame("ADMIN SECTION");
+JButton b = new JButton("Add Librarian");
+b.setBounds(110,100,130,50);
+ Container c = frame.getContentPane();
+c.setLayout(null);
+
+c.setBackground(Color.PINK);
+JButton b1 = new JButton("View Librarian");
+b1.setBounds(110,170,130,50);
+JButton b2 = new JButton("Delete Librarian");
+b2.setBounds(110,240,130,50);
+JButton b3 = new JButton("Logout");
+b3.setBounds(110,310,130,50);
+frame.add(b);
+frame.add(b1);
+frame.add(b2);
+frame.add(b3);
+frame.setSize(400, 500);
+frame.setLayout(null);
+frame.setVisible(true);
+frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+b.addActionListener((ActionListener) this);
+b1.addActionListener((ActionListener) this);
+b2.addActionListener((ActionListener) this);
+b3.addActionListener((ActionListener) this);
+}
+public static void main(String[] args) {
+new adminsection();
+}
+public void actionPerformed(ActionEvent ae) {
+if(ae.getActionCommand().equals("Add Librarian"))
+{
+LibForm frm = new LibForm();
+}
+if(ae.getActionCommand().equals("View Librarian"))
+{
+Viewlibrarian lib = new Viewlibrarian();
+//lib.createUI();
+lib.showTableData();
+}
+if(ae.getActionCommand().equals("Delete Librarian"))
+{
+DelLib lib = new DelLib();
+}
+if(ae.getActionCommand().equals("Logout"))
+{
+Logout lg = new Logout();
+ Logout.main("aaa");
+}
+ }
+}
