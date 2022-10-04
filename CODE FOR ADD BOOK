@@ -1,0 +1,139 @@
+package adminlogin;
+import javax.swing.*;
+import dbcon.DBCon;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+public class Add_Books implements ActionListener {
+JFrame frame;
+JLabel codeLabel = new JLabel("Book_Code");
+JLabel nameLabel = new JLabel("Book_Name");
+JLabel authorLabel = new JLabel("Author");
+JLabel publisherLabel = new JLabel("Publisher");
+JLabel stockLabel = new JLabel("Stock");
+JLabel rackLabel = new JLabel("Rack no.");
+JTextField codeTextField = new JTextField();
+JTextField nameTextField = new JTextField();
+JTextField authorTextField = new JTextField();
+JTextField publisherTextField = new JTextField();
+JTextField stockTextField = new JTextField();
+JTextField rackTextField = new JTextField();
+JButton addButton = new JButton("ADD");
+JButton resetButton = new JButton("RESET");
+ Add_Books(){
+createWindow();
+setLocationAndSize();
+addComponentsToFrame();
+actionEvent();
+}
+public void createWindow()
+{
+frame = new JFrame();
+frame.setTitle("ADD BOOKS");
+frame.setBounds(40, 40, 380, 600);
+frame.getContentPane().setBackground(Color.GRAY);
+
+frame.getContentPane().setLayout(null);
+frame.setVisible(true);
+frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+frame.setResizable(true);
+}
+public void setLocationAndSize() {
+codeLabel.setBounds(20, 20, 90, 70);
+nameLabel.setBounds(20, 70, 80, 70);
+authorLabel.setBounds(20, 120, 100, 70);
+publisherLabel.setBounds(20, 170, 100, 70);
+stockLabel.setBounds(20, 220, 140, 70);
+rackLabel.setBounds(20, 270, 100, 70);
+codeTextField.setBounds(180, 43, 165, 23);
+nameTextField.setBounds(180, 93, 165, 23);
+authorTextField.setBounds(180,143,165,23);
+ publisherTextField.setBounds(180,193,165,23);
+ stockTextField.setBounds(180,243,165,23);
+ rackTextField.setBounds(180,293,165,23);
+ 
+ addButton.setBounds(70,500,100,35);
+ resetButton.setBounds(220,500,100,35);
+ }
+public void addComponentsToFrame()
+{
+ frame.add(codeLabel);
+ frame.add(nameLabel);
+ frame.add(authorLabel);
+ frame.add(publisherLabel);
+ frame.add(stockLabel);
+ frame.add(rackLabel);
+ frame.add(codeTextField);
+ frame.add(nameTextField);
+ frame.add(authorTextField);
+ frame.add(publisherTextField);
+ frame.add(stockTextField);
+ frame.add(rackTextField);
+ frame.add(addButton);
+ frame.add(resetButton);
+}
+ public void actionEvent()
+{
+ addButton.addActionListener(this);
+ resetButton.addActionListener(this);
+}
+public void actionPerformed(ActionEvent ae) {
+Connection conn=null;
+
+ if(ae.getSource()==addButton)
+ 
+ {
+ try {
+ 
+ conn =DBCon.getCon();
+ PreparedStatement ps=conn.prepareStatement("insert into add_books 
+values(?,?,?,?,?,?)");
+ ps.setString(1,codeTextField.getText());
+ ps.setString(2,nameTextField.getText());
+ ps.setString(3,authorTextField.getText());
+ ps.setString(4,publisherTextField.getText());
+ // ps.setString(5,stockTextField.getText());
+ // ps.setString(6,rackTextField.getText());
+ 
+ String st=stockTextField.getText();
+ int stno= Integer.parseInt(st);
+ ps.setInt(5,stno);
+ 
+ String rt=rackTextField.getText();
+ int rtno= Integer.parseInt(rt);
+ ps.setInt(6,rtno);
+ 
+ Object obj = ae.getSource();
+ if(obj == addButton ) {
+ 
+ ps.executeUpdate();
+ 
+ JOptionPane.showMessageDialog(null,"Librarian Added Book Successfully");
+ 
+ }
+ else
+ {
+ JOptionPane.showMessageDialog(null,"Book Added Not Successfully");
+ }
+ 
+ conn.close();
+ } catch (SQLException e1) {
+ e1.printStackTrace();
+ }
+ }
+ if(ae.getSource()==resetButton)
+ {
+ codeTextField.setText("");
+ nameTextField.setText("");
+ authorTextField.setText("");
+ publisherTextField.setText("");
+
+ stockTextField.setText("");
+ rackTextField.setText("");
+ 
+ }
+ }
+ public static void main(String[] args) {
+new Add_Books();
+}
+}
