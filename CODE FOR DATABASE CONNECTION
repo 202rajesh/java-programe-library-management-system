@@ -1,0 +1,33 @@
+package dbcon;
+import java.sql.*;
+public class DBCon {
+private static Connection conn=null;
+ public static Connection getCon() {
+ 
+ try {
+ Class.forName("oracle.jdbc.driver.OracleDriver");
+ System.out.println("Load the Driver class");
+ 
+ conn = 
+DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","oracle");
+ System.out.println("Get Connection"+conn);
+ // conn.close();
+ }catch(ClassNotFoundException e){
+ System.out.println("MyClassNotFoundException " +e);
+e.printStackTrace();
+}
+catch(SQLException e){
+ System.out.println("SQLException " +e);
+e.printStackTrace();
+}
+ catch(Exception e){
+ System.out.println("Exception " +e);
+e.printStackTrace();
+}
+ 
+ 
+ return conn;
+ }
+public static void main(String[] args) {
+}
+}
