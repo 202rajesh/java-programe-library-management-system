@@ -1,0 +1,148 @@
+package adminlogin;
+import javax.swing.*;
+import dbcon.DBCon;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+public class Issue_Books implements ActionListener { 
+ JFrame frame;
+JLabel codeLabel = new JLabel("Book_Code");
+JLabel idLabel = new JLabel("Student_Id");
+JLabel nameLabel = new JLabel("Student_Name");
+JLabel contactLabel = new JLabel("Student_Contact");
+
+JLabel issueLabel = new JLabel("Issued Date");
+JLabel reissueLabel = new JLabel("Reissued Date");
+JTextField codeTextField = new JTextField();
+JTextField idTextField = new JTextField();
+JTextField nameTextField = new JTextField();
+JTextField contactTextField = new JTextField();
+JTextField issueTextField = new JTextField();
+JTextField reissueTextField = new JTextField();
+JButton addButton = new JButton("Issue Book");
+JButton resetButton = new JButton("RESET");
+Issue_Books(){
+createWindow();
+setLocationAndSize();
+addComponentsToFrame();
+actionEvent();
+}
+public void createWindow()
+{
+frame = new JFrame();
+frame.setTitle("ISSUE BOOKS");
+frame.setBounds(40, 40, 380, 600);
+frame.getContentPane().setBackground(Color.LIGHT_GRAY);
+frame.getContentPane().setLayout(null);
+frame.setVisible(true);
+frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+frame.setResizable(false);
+}
+public void setLocationAndSize() {
+codeLabel.setBounds(20, 20, 90, 70);
+idLabel.setBounds(20, 70, 80, 70);
+nameLabel.setBounds(20, 120, 100, 70);
+contactLabel.setBounds(20, 170, 100, 70);
+issueLabel.setBounds(20, 220, 140, 70);
+reissueLabel.setBounds(20, 270, 100, 70);
+codeTextField.setBounds(180, 43, 165, 23);
+idTextField.setBounds(180, 93, 165, 23);
+nameTextField.setBounds(180,143,165,23);
+ contactTextField.setBounds(180,193,165,23);
+ issueTextField.setBounds(180,243,165,23);
+ reissueTextField.setBounds(180,293,165,23);
+ 
+ addButton.setBounds(70,500,100,35);
+ resetButton.setBounds(220,500,100,35);
+}
+public void addComponentsToFrame()
+{
+
+ frame.add(codeLabel);
+ frame.add(idLabel);
+ frame.add(nameLabel);
+ frame.add(contactLabel);
+ frame.add(issueLabel);
+ frame.add(reissueLabel);
+ frame.add(codeTextField);
+ frame.add(idTextField);
+ frame.add(nameTextField);
+ frame.add(contactTextField);
+ frame.add(issueTextField);
+ frame.add(reissueTextField);
+ frame.add(addButton);
+ frame.add(resetButton);
+ }
+ public void actionEvent()
+{
+ addButton.addActionListener(this);
+ resetButton.addActionListener(this);
+}
+@Override
+public void actionPerformed(ActionEvent ae) {
+Connection conn=null;
+ if(ae.getSource()==addButton)
+ 
+ {
+ try {
+ conn =DBCon.getCon();
+ PreparedStatement ps=conn.prepareStatement("insert into issue_books 
+values(?,?,?,?,?,?)");
+ 
+ ps.setString(1,codeTextField.getText());
+ ps.setString(2,idTextField.getText());
+ ps.setString(3,nameTextField.getText());
+ String st=contactTextField.getText();
+ int ctno= Integer.parseInt(st);
+ ps.setInt(4,ctno);
+ 
+ ps.setString(5,issueTextField.getText());
+ 
+ ps.setString(6,reissueTextField.getText());
+ Object obj = ae.getSource();
+ if(obj == addButton ) {
+ 
+ ps.executeUpdate();
+
+ JOptionPane.showMessageDialog(null,"Book Issued Successfully");
+ 
+ }
+ else
+ {
+ JOptionPane.showMessageDialog(null,"Book Issued Not Successfully");
+ }
+ 
+ conn.close();
+ 
+ 
+ } catch (SQLException e1) {
+ 
+ e1.printStackTrace();
+ }
+ }
+ 
+ if(ae.getSource()==resetButton)
+ {
+ 
+ codeTextField.setText("");
+ 
+ idTextField.setText("");
+ 
+ nameTextField.setText("");
+ 
+ contactTextField.setText("");
+ 
+ issueTextField.setText("");
+ 
+ reissueTextField.setText("");
+ 
+ }
+ }
+ 
+ public static void main(String[] args) {
+ new Issue_Books();
+ }
+}
+ 
