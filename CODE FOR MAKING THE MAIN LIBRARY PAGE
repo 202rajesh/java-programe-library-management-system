@@ -1,0 +1,37 @@
+package adminlogin;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+public class lms extends JFrame implements ActionListener {
+ lms(){
+JFrame frame = new JFrame("LIBARARY MANAGEMENT SYSTEM");
+JButton b = new JButton("ADMIN");
+b.setBounds(150,100,130,50);
+Container c = frame.getContentPane();
+c.setLayout(null);
+c.setBackground(Color. blue);
+JButton b1 = new JButton("LIBRARIAN");
+b1.setBounds(150,170,130,50);
+frame.add(b);
+frame.add(b1);
+frame.setSize(450, 400);
+frame.setLayout(null);
+frame.setVisible(true);
+frame.setResizable(false);
+frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+b.addActionListener(this);
+b1.addActionListener(this);
+}
+public static void main(String[] args) {
+new lms();
+}
+public void actionPerformed(ActionEvent ae)
+{
+if(ae.getActionCommand().equals("ADMIN")){
+AdminLogin login = new AdminLogin();
+}
+if(ae.getActionCommand().equals("LIBRARIAN")){
+LibrarianLogin login = new LibrarianLogin();
+}
+}
+}
