@@ -1,0 +1,40 @@
+package adminlogin;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.Statement;
+import javax.swing.event.*;
+import dbcon.DBCon;
+public class Logout implements ActionListener {
+public static void main(String ...args) {
+JDialog.setDefaultLookAndFeelDecorated(true);
+int response = JOptionPane.showConfirmDialog(null,"Do you want to exit???","Confirm 
+Exit",
+JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+int confirmed = response;
+if (confirmed == JOptionPane.YES_OPTION) {
+lms s = new lms();
+ dispose();
+ }
+ }
+private static void dispose() {
+new Logout();
+}
+@Override
+public void actionPerformed(ActionEvent ae) {
+Connection conn=null;
+ 
+try {
+
+if(ae.getActionCommand().equals("LOGOUT")) {
+ conn =DBCon.getCon();
+Statement stmt = conn.createStatement();
+ System.out.println("Create statement");
+}
+}
+catch (Exception e) {
+e.printStackTrace();
+}
+}
+}
